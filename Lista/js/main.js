@@ -62,14 +62,10 @@ const saveClient = () => {
     }
 }
 
-//
-
-const createRow = (client, index, data) => {
+const createRow = (client, index) => {
     const newRow = document.createElement('tr')
     newRow.innerHTML = `
         <td>${client.produto}</td>
-        <td>${data.name}</td>
-        <td>${data.email}</td>
         <td>
             <button type="button" class="button green" id="edit-${index}">Editar</button>
             <button type="button" class="button red" id="delete-${index}" >Excluir</button>
@@ -79,7 +75,7 @@ const createRow = (client, index, data) => {
 }
 
 const clearTable = () => {
-    const rows = document.querySelectorAll('#tableClient>tbody tr')
+    const rows = document.querySelectorAll('#tableClient > tbody > tr')
     rows.forEach(row => row.parentNode.removeChild(row))
 }
 
@@ -110,7 +106,7 @@ const editDelete = (event) => {
             editClient(index)
         } else {
             const client = readClient()[index]
-            const response = confirm(`Deseja realmente excluir o produto ${client.produto}`)
+            const response = confirm(`Deseja realmente excluir o produto? ${client.produto}`)
             if (response) {
                 deleteClient(index)
                 updateTable()
@@ -137,21 +133,4 @@ document.querySelector('#tableClient>tbody')
 document.getElementById('cancelar')
     .addEventListener('click', closeModal)
 
-    const Delete = (event) => {
-        if (event.target.type == 'button') {
-    
-            const [action, index] = event.target.id.split('-')
-    
-            if (action == 'edit') {
-                editClient(index)
-            } else {
-                const client = readClient()[index]
-                const response = confirm(`Deseja realmente excluir o produto ${client.produto}`)
-                if (response) {
-                    deleteClient(index)
-                    updateTable()
-                }
-            }
-        }
-    }
 
