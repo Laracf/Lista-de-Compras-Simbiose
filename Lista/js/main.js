@@ -18,6 +18,16 @@ const deleteClient = (index) => {
     setLocalStorage(dbProduto)
 }
 
+const deleteAllItems = () => {
+    const response = confirm(`Tem certeza que deseja excluir todos os itens da tabela?`)
+    if (response) {
+        const dbProduto = readClient();
+        dbProduto.splice(0, dbProduto.length);
+        setLocalStorage(dbProduto);
+        updateTable();
+    }
+}
+
 const updateClient = (index, client) => {
     const dbProduto = readClient()
     dbProduto[index] = client
@@ -63,16 +73,28 @@ const saveClient = () => {
 }
 
 const createRow = (client, index) => {
-    const newRow = document.createElement('tr')
+    fetch('https://randomuser.me/api/?results=1')
+    .then(res => res.json())
+    .then(data => { 
+
+        let name = data.results[0].name.first;
+        let email = data.results[0].email;
+
+        const newRow = document.createElement('tr')
     newRow.innerHTML = `
         <td>${client.produto}</td>
+        <td>${name}</td>
+        <td>${email}</td>
         <td>
             <button type="button" class="button green" id="edit-${index}">Editar</button>
             <button type="button" class="button red" id="delete-${index}" >Excluir</button>
         </td>
     `
     document.querySelector('#tableClient>tbody').appendChild(newRow)
+
+    })
 }
+
 
 const clearTable = () => {
     const rows = document.querySelectorAll('#tableClient > tbody > tr')
@@ -132,5 +154,8 @@ document.querySelector('#tableClient>tbody')
 
 document.getElementById('cancelar')
     .addEventListener('click', closeModal)
+
+document.getElementById('delete-all')
+    .addEventListener('click', deleteAllItems)
 
 
